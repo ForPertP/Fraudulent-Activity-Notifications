@@ -1,3 +1,20 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+string ltrim(const string &);
+string rtrim(const string &);
+vector<string> split(const string &);
+
+/*
+ * Complete the 'activityNotifications' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts following parameters:
+ *  1. INTEGER_ARRAY expenditure
+ *  2. INTEGER d
+ */
+
 void insertInOrder(vector<int>& arr, int x)
 {
     if (x > arr[arr.size()-1])

@@ -12,62 +12,60 @@ using System.Text.RegularExpressions;
 using System.Text;
 using System;
 
-// Test cases 4 and 5 are timing out.
-
 class Result
 {
-    public static void InsertInOrder(List<int> arr, int x)
+    private static double SearchMedian(int[] countingSort, int d)
     {
-        int pos = arr.BinarySearch(x);
-        if (pos < 0)
-        {
-            pos = ~pos;
-        }
-        arr.Insert(pos, x);
-    }
+        bool isEven = d % 2 == 0;
+        int count = 0;
+        int medianIndex1 = -1;
+        int medianIndex2 = -1;
+        int medianCount = isEven ? d / 2 : (d + 1) / 2;
 
-    public static void RemoveFromOrdered(List<int> arr, int x)
-    {
-        int pos = arr.BinarySearch(x);
-        if (pos >= 0)
+        for (int i = 0; i < countingSort.Length; i++)
         {
-            arr.RemoveAt(pos);
-        }
-    }
+            count += countingSort[i];
 
+            if (medianIndex1 == -1 && count >= medianCount)
+                medianIndex1 = i;
+
+            if (isEven && medianIndex2 == -1 && count >= medianCount + 1)
+                medianIndex2 = i;
+
+            if (!isEven && medianIndex1 != -1)
+                return medianIndex1;
+
+            if (isEven && medianIndex2 != -1)
+                return (medianIndex1 + medianIndex2) / 2.0;
+        }
+
+        return 0;
+    }
+    
     public static int activityNotifications(List<int> expenditure, int d)
     {
-        bool even = (d % 2 == 0);
         int notifications = 0;
+        int maxExpenditure = expenditure.Max();
 
-        List<int> ordered = expenditure.GetRange(0, d).ToList();
-        ordered.Sort();
+        int[] countingSort = new int[maxExpenditure + 1];
+
+        for (int i = 0; i < d; i++)
+            countingSort[expenditure[i]]++;
 
         for (int i = d; i < expenditure.Count; i++)
         {
-            double median;
-            if (even)
-            {
-                median = (ordered[d / 2 - 1] + ordered[d / 2]) / 2.0;
-            }
-            else
-            {
-                median = ordered[d / 2];
-            }
+            double median = SearchMedian(countingSort, d);
 
-            if (2 * median <= expenditure[i])
-            {
+            if (expenditure[i] >= 2 * median)
                 notifications++;
-            }
 
-            RemoveFromOrdered(ordered, expenditure[i - d]);
-            InsertInOrder(ordered, expenditure[i]);
+            countingSort[expenditure[i - d]]--;
+            countingSort[expenditure[i]]++;
         }
 
         return notifications;
     }
 }
-
 
 class Solution
 {

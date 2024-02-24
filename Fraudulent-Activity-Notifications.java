@@ -21,6 +21,13 @@ class Result {
      *  2. INTEGER d
      */
 
+    public static void insertInOrder(List<Integer> arr, int x) {
+        int pos = Collections.binarySearch(arr, x);
+        if (pos < 0) {
+            pos = -(pos + 1);
+        }
+        arr.add(pos, x);
+    }
 }
 
 public class Solution {

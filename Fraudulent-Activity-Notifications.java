@@ -28,6 +28,14 @@ class Result {
         }
         arr.add(pos, x);
     }
+
+    public static void removeFromOrdered(List<Integer> arr, int x) {
+        int pos = Collections.binarySearch(arr, x);
+        if (pos >= 0) {
+            arr.remove(pos);
+        }
+    }
+
 }
 
 public class Solution {

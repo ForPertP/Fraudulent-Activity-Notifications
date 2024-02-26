@@ -23,7 +23,7 @@ class Result {
 
     public static void insertInOrder(List<Integer> arr, int x) {
         int pos = Collections.binarySearch(arr, x);
-        if (pos == -1) {
+        if (pos < 0) {
             pos = -(pos + 1);
         }
         arr.add(pos, x);

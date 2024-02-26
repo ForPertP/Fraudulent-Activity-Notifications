@@ -23,7 +23,7 @@ class Result {
 
     public static void insertInOrder(List<Integer> arr, int x) {
         int pos = Collections.binarySearch(arr, x);
-        if (pos < 0) {
+        if (pos == -1) {
             pos = -(pos + 1);
         }
         arr.add(pos, x);
@@ -34,6 +34,32 @@ class Result {
         if (pos >= 0) {
             arr.remove(pos);
         }
+    }
+
+    public static int activityNotifications(List<Integer> expenditure, int d) {
+        boolean even = (d % 2 == 0);
+        int notifications = 0;
+
+        List<Integer> ordered = new ArrayList<>(expenditure.subList(0, d));
+        Collections.sort(ordered);
+
+        for (int i = d; i < expenditure.size(); i++) {
+            double median;
+            if (even) {
+                median = (ordered.get(d / 2 - 1) + ordered.get(d / 2)) / 2.0;
+            } else {
+                median = ordered.get(d / 2);
+            }
+
+            if (2 * median <= expenditure.get(i)) {
+                notifications++;
+            }
+
+            removeFromOrdered(ordered, expenditure.get(i - d));
+            insertInOrder(ordered, expenditure.get(i));
+        }
+
+        return notifications;
     }
 
 }
